@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.weixin.xplayer.PlayingView"
+    tools:showIn="@layout/activity_playing_view">
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_PlayingView"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+
+
+        card_view:cardCornerRadius="9dp"
+        >
+    </android.support.v7.widget.CardView>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:id="@+id/space_between_progressBar"
+        android:layout_below="@+id/card_view_PlayingView"/>
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_progress_bar"
+        android:layout_gravity="center"
+        android:layout_below="@+id/space_between_progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        card_view:cardCornerRadius="2dp"
+        >
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/progressBar"
+            android:layout_alignBottom="@+id/card_view_progress_bar"
+            android:layout_centerHorizontal="true" />
+    </android.support.v7.widget.CardView>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/space_between_progressBar_buttons"
+        android:layout_below="@+id/card_view_progress_bar"/>
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_buttons"
+        android:layout_gravity="center"
+        card_view:cardBackgroundColor="#222222"
+        android:layout_below="@+id/space_between_progressBar_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="0dp"
+        card_view:cardCornerRadius="3dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/btn_play"
+            android:layout_alignBottom="@+id/btn_play"
+            android:src="@drawable/ic_skip_previous_black_48dp"/>
+        <ImageButton
+            android:layout_width="120dp"
+            android:id="@+id/btn_play"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_play_arrow_black_48dp"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/btn_play"
+                android:layout_toEndOf="@id/btn_play"
+                android:src="@drawable/ic_skip_next_black_48dp"/>
+        </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+
+</RelativeLayout>
