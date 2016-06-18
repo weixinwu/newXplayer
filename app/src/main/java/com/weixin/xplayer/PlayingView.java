@@ -18,4 +18,6 @@ public class PlayingView extends AppCompatActivity {
     }
     //c
 
+
+
 }

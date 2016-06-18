@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingBottom="0dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -16,6 +16,7 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:id="@+id/songList"
+       android:visibility="gone"
        android:layout_marginBottom="60dp">
 
    </ListView>
@@ -25,14 +26,15 @@
        android:layout_height="20px"
        android:layout_alignParentBottom="true"
        android:layout_alignParentStart="true"
-       android:layout_marginBottom="80dp" />
+       android:layout_marginBottom="80dp"
+       android:id="@+id/space" />
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view1"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         card_view:cardBackgroundColor="#99747C6A"
-        android:layout_height="61dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="0dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -41,10 +43,10 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="60dp">
        <ImageButton
            android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+           android:layout_height="match_parent"
            android:id="@+id/button_skip_previous"
            android:onClick="onClickSkipPrevious"
            android:src="@drawable/ic_skip_previous_black_48dp"/>
@@ -53,19 +55,33 @@
            android:onClick="onClickPlay"
            android:id="@+id/button_play"
            android:layout_toEndOf="@+id/button_skip_previous"
-           android:layout_height="wrap_content"
+           android:layout_height="match_parent"
            android:src="@drawable/ic_play_arrow_black_48dp" />
        <ImageButton
            android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+           android:layout_height="match_parent"
            android:layout_toEndOf="@+id/button_play"
            android:onClick="onClickSkipNext"
            android:src="@drawable/ic_skip_next_black_48dp"/>
         </RelativeLayout>
-      <TextView
-          android:id="@+id/info_text"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent" />
     </android.support.v7.widget.CardView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan music"
+        android:id="@+id/scanMusic"
+        android:onClick="scanSongOnClick"
+        android:layout_above="@+id/space"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp" />
+
+    <TextView
+        android:id="@+id/info_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="32dp" />
 
 </RelativeLayout>

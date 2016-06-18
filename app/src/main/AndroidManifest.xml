@@ -25,7 +25,12 @@
         <activity
             android:name=".PlayingView"
             android:label="@string/title_activity_playing_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
