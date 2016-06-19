@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<MusicFile> songFiles;
     ArrayList<File> songFilesRandom;
     ArrayList<String> arrayList;
-    ImageButton btn_play;
+    static ImageButton btn_play;
     Button btn_scan;
     SeekBar seekBar;
     int currentPlaying;
-    final MediaPlayer mediaPlayer  = new MediaPlayer();
+    //final MediaPlayer mediaPlayer  = new MediaPlayer();
     boolean isRandom = false;
     SharedPreferences sharedpreference;
     SharedPreferences.Editor editor ;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     final String sharedPrefsSongCount = "sharedPrefsSongCount";
     final String sharedPrefsIsLoaded = "sharedPrefsIsLoaded";
     ProgressDialog progressdialog;
+    MyService ms;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +79,16 @@ public class MainActivity extends AppCompatActivity {
         btn_scan=(Button)findViewById(R.id.scanMusic);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         btn_play = (ImageButton)findViewById(R.id.button_play);
+        btn_play.setImageResource(R.drawable.ic_play_arrow_black_48dp);
         currentPlaying = -1;
-
+        ms = new MyService("song");
+        Intent foregroundService = new Intent(getBaseContext(),MyService.class);
+        startService(foregroundService);
 
         sharedpreference = getSharedPreferences("musicInfo", Context.MODE_PRIVATE);
 
         editor = sharedpreference.edit();
-        editor.clear().commit();
+        //editor.clear().commit();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,21 +101,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.start();
-                btn_play.setImageResource(R.drawable.ic_pause_black_48dp);
-            }
-        });
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                if (currentPlaying < songFiles.size()-1)
-                    currentPlaying++;
-                else currentPlaying = 0;
-            }
-        });
+
+//        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                if (currentPlaying < songFiles.size()-1)
+//                    currentPlaying++;
+//                else currentPlaying = 0;
+//            }
+//        });
 
         songList = (ListView)findViewById(R.id.songList);
         songFiles= new ArrayList<MusicFile>();
@@ -133,38 +132,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-
-                    if (mediaPlayer.isPlaying()) {
-
-                        mediaPlayer.stop();
-                        mediaPlayer.reset();
-                    }else {
-                        mediaPlayer.reset();
-                    }
                     String path = songFiles.get(position).getPath();
-                    currentPlaying = position;
-                    mediaPlayer.setDataSource(path);
-                    //if (mediaPlayer.getDuration()<40000) System.out.print("----------------------");
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
+                    ms.setCurrentPlaying(position);
+                    ms.onListViewSelected(path);
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
         });
 
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_play_arrow_black_48dp);
-        Notification noti = new Notification.Builder(getBaseContext())
-                .setContentTitle("New mail from " + "Asdasd".toString())
-                .setContentText("context")
-                .setSmallIcon(R.drawable.ic_pause_black_48dp)
-                .setLargeIcon(bmp)
-                .build();
-
-
-
     }
     public void scanSongOnClick(View v){
+
         File musicFolder = null;
         musicFolder = Environment.getExternalStorageDirectory();
         File[] p = musicFolder.listFiles();
@@ -256,67 +237,19 @@ public class MainActivity extends AppCompatActivity {
             songList.setVisibility(View.VISIBLE);
             btn_scan.setVisibility(View.INVISIBLE);
             progressdialog.dismiss();
+            ms.setSongFiles(songFiles);
         }
 
     }
 
     public void onClickPlay(View v) throws IOException {
-        if (mediaPlayer.getDuration()<60000) {
-            System.out.println("--------"+"in the duration lt 20 " + mediaPlayer.getDuration());
-            mediaPlayer.reset();
-            currentPlaying = 0;
-            String path = songFiles.get(0).getPath();
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepareAsync();
-        }
-        else if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-            btn_play.setImageResource(R.drawable.ic_pause_black_48dp);
-        }
-        else {
-            mediaPlayer.pause();
-            btn_play.setImageResource(R.drawable.ic_play_arrow_black_48dp);
-        }
+        ms.onPlayClicked();
     }
     public void onClickSkipNext(View v) throws Exception{
-        if (currentPlaying < songFiles.size()-1)
-            currentPlaying++;
-        else currentPlaying = 0;
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            mediaPlayer.reset();
-            String path = songFiles.get(currentPlaying).getPath();
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepareAsync();
-
-
-        }else {
-            mediaPlayer.reset();
-            String path = songFiles.get(currentPlaying).getPath();
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepareAsync();
-
-        }
-
+        ms.onSkipNextClicked();
     }
     public void onClickSkipPrevious(View v) throws IOException {
-        if (currentPlaying <= 0)
-            currentPlaying=(songFiles.size()-1);
-        else currentPlaying--;
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            mediaPlayer.reset();
-            String path = songFiles.get(currentPlaying).getPath();
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepareAsync();
-            //comment
-
-        }else {
-            mediaPlayer.reset();
-            String path = songFiles.get(currentPlaying).getPath();
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepareAsync();
-        }
+        ms.onSkipPreviousClicked();
     }
     public void onClickCardView(View v){
         Intent i = new Intent(getBaseContext(),PlayingView.class);
@@ -343,5 +276,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public static void setBtn(int temp){
+        if (temp==1)
+            btn_play.setImageResource(R.drawable.ic_pause_black_48dp);
+        else
+            btn_play.setImageResource(R.drawable.ic_play_arrow_black_48dp);
+    }
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }
