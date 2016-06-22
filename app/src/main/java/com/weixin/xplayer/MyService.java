@@ -57,6 +57,9 @@ public class MyService extends Service {
                 .setSmallIcon(R.drawable.ic_play_arrow_black_48dp)
                 .setContentTitle("playing");
         mainAct = new Intent(getBaseContext(),MainActivity.class);
+        mainAct.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mainAct.addCategory(Intent.CATEGORY_LAUNCHER);
+        mainAct.setAction(Intent.ACTION_MAIN);
         pi = PendingIntent.getActivity(getBaseContext(),0,mainAct,PendingIntent.FLAG_UPDATE_CURRENT);
         nb.setContentIntent(pi);
         nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -100,7 +103,10 @@ public class MyService extends Service {
 
     }
     public void onPlayClicked(){
-        if (mediaPlayer.getDuration()<60000) {
+        if (songFiles.size() < 1){
+            return ;
+        }
+        else if (mediaPlayer.getDuration()<60000) {
             System.out.println("--------"+"in the duration lt 20 " + mediaPlayer.getDuration());
             mediaPlayer.reset();
             int currentPlaying = 0;
@@ -156,12 +162,12 @@ public class MyService extends Service {
         mediaPlayer.prepareAsync();
     }
 
-
-
-
-
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.reset();
+        mediaPlayer.release();
+    }
 
     public void setCurrentPlaying(int currentPlaying){
         this.currentPlaying = currentPlaying;
