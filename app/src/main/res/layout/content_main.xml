@@ -52,11 +52,30 @@
        <ImageButton
            android:layout_width="wrap_content"
            android:layout_height="match_parent"
+           android:id="@+id/btn_skip_next"
            android:layout_toEndOf="@+id/button_play"
            android:onClick="onClickSkipNext"
            android:src="@drawable/ic_skip_next_black_48dp"/>
+            <android.support.v4.widget.Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/btn_skip_next"
+                android:id="@+id/space_between_btn_and_title"/>
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="35dp"
+           android:text="SongTitle"
+           android:id="@+id/songTitle"
+           android:layout_toEndOf="@+id/space_between_btn_and_title"/>
 
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="25dp"
+           android:layout_below="@+id/songTitle"
+           android:layout_toEndOf="@+id/space_between_btn_and_title"
+           android:text="Song artist"/>
         </RelativeLayout>
+
     </android.support.v7.widget.CardView>
 
     <Button

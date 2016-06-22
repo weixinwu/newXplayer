@@ -11,5 +11,13 @@
         android:id="@+id/action_quit"
         android:orderInCategory="100"
         android:title="Quit"
-        android:showAsAction="never"/>
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/shuffle"
+        android:title="Favorite"
+        app:showAsAction="always"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_shuffle_white_48dp"
+        />
+
 </menu>

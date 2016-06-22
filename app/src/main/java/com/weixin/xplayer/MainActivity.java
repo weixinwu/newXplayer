@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     final String sharedPrefsIsLoaded = "sharedPrefsIsLoaded";
     ProgressDialog progressdialog;
     MyService ms;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         btn_scan=(Button)findViewById(R.id.scanMusic);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         btn_play = (ImageButton)findViewById(R.id.button_play);
         btn_play.setImageResource(R.drawable.ic_play_arrow_black_48dp);
         currentPlaying = -1;
@@ -92,13 +93,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-                int dp = (int) (displayMetrics.widthPixels * 160 / displayMetrics.densityDpi);
-                Snackbar.make(view, "shuffle playing"+dp, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                long seed = System.nanoTime();
-                Collections.shuffle(songFiles,new Random(seed));
-
+                fab.setBackgroundDrawable(getDrawable(R.drawable.ic_shuffle_white_48dp));
             }
         });
 
@@ -276,6 +271,14 @@ public class MainActivity extends AppCompatActivity {
         }else if (id ==R.id.action_quit){
             ms.onDestroy();
             this.finish();
+        }else if (id ==R.id.shuffle){
+            if (!isRandom) {
+                item.setIcon(R.drawable.ic_repeat_white_48dp);
+                isRandom = true;
+            }else {
+                item.setIcon(R.drawable.ic_shuffle_white_48dp);
+                isRandom = false;
+            }
         }
 
         return super.onOptionsItemSelected(item);
