@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="#eeeeee"
+    android:id="@+id/notification_relativeLayout">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_shuffle_white_48dp"
+        android:layout_alignParentBottom="true"
+        />
+
+
+        <Button
+            android:layout_alignParentBottom="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toLeftOf="@+id/notification_play"
+            android:id="@+id/notification_previous"
+            android:text="paly"/>
+        <Button
+            android:layout_alignParentBottom="true"
+            android:layout_width="50dp"
+            android:id="@+id/notification_play"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:text="next"/>
+        <Button
+            android:layout_alignParentBottom="true"
+            android:id="@+id/notification_next"
+            android:layout_toEndOf="@id/notification_play"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="previous"/>
+
+
+</RelativeLayout>

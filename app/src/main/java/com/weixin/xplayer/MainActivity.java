@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
             this.finish();
         }else if (id ==R.id.shuffle){
             if (!isRandom) {
-                item.setIcon(R.drawable.ic_repeat_white_48dp);
+                item.setIcon(R.drawable.ic_pause_black_48dp);
                 isRandom = true;
             }else {
                 item.setIcon(R.drawable.ic_shuffle_white_48dp);

@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.widget.RemoteViews;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,10 +53,13 @@ public class MyService extends Service {
     public void onCreate() {
         super.onCreate();
         nb = new Notification.Builder(getBaseContext());
+        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.notification);
 
         nb.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_play_arrow_black_48dp))
                 .setSmallIcon(R.drawable.ic_play_arrow_black_48dp)
-                .setContentTitle("playing");
+                .setContentTitle("playing")
+        .setContent(remoteViews);
+
         mainAct = new Intent(getBaseContext(),MainActivity.class);
         mainAct.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mainAct.addCategory(Intent.CATEGORY_LAUNCHER);
